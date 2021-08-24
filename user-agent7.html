@@ -27,7 +27,7 @@
                 "storepath": "https://play.google.com/store/apps/details?id=com.microsoft.windowsintune.companyportal&hl=en_IN&gl=US",
                 "apppath": "CompanyPortal://"
             }
-        },
+        }
     }
 
     function getOS() {
@@ -64,21 +64,165 @@
 
         return results === null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
     }
+    function getIOSUrl(path){
+        var id = getParameterByName("id");
+                var type = getParameterByName("type");
+                var appMode = getParameterByName("appMode");
+                var isPlaylist = getParameterByName("isPlaylist");
+                var playlistId = getParameterByName("playlistId");
+                var latestId = getParameterByName("latestId");
+                var defaultAudioLanguage = getParameterByName("defaultAudioLanguage");
+                var selectedTab = getParameterByName("selectedTab");
+                var seeMore = getParameterByName("seeMore");
+                var layout = getParameterByName("layout");
+                var categoryName = getParameterByName("categoryName");
+                var isOriginal = getParameterByName("isOriginal");
+                var charCategory =  getParameterByName("charCategory");
+                var screenType = getParameterByName("screenType");
+                var homeId = getParameterByName("homeId");
 
+                var url = path.indexOf('?')>-1?(path+'&'):(path+'?');
+
+                if(appMode.length>0){
+                    url+='appMode:'+appMode+'&';
+                }
+                if(id.length>0){
+                    url+='id:'+id+'&';
+                }
+                if(type.length>0){
+                    url+='type:'+type+'&';
+                }
+                if(isPlaylist.length>0){
+                    url+='isPlaylist:'+isPlaylist+'&';
+                }
+                if(playlistId.length>0){
+                    url+='playlistId:'+playlistId+'&';
+                }
+                if(latestId.length>0){
+                    url+='latestId:'+latestId+'&';
+                }
+                if(defaultAudioLanguage.length>0){
+                    url+='defaultAudioLanguage:'+defaultAudioLanguage+'&';
+                }
+                if(selectedTab.length>0){
+                    url+='selectedTab:'+selectedTab+'&';
+                }
+                if(seeMore.length>0){
+                    url+='seeMore:'+seeMore+'&';
+                }
+                 if(layout.length>0){
+                    url+='layout:'+layout+'&';
+                }
+                if(categoryName.length>0){
+                    url+='categoryName:'+categoryName+'&';
+                }
+                if(isOriginal.length>0){
+                    url+='isOriginal:'+isOriginal+'&';
+                }
+                if(charCategory.length>0){
+                    url+='charCategory:'+charCategory+'&';
+                }
+                 if(screenType.length>0){
+                    url+='screenType:'+screenType+'&';
+                }
+                if(homeId.length>0){
+                    url+='homeId:'+homeId;
+                }
+
+                return url;
+    }
+
+    function getAndroidUrl(path){
+                var id = getParameterByName("id");
+                var type = getParameterByName("type");
+                var appMode = getParameterByName("appMode");
+                var isPlaylist = getParameterByName("isPlaylist");
+                var playlistId = getParameterByName("playlistId");
+                var latestId = getParameterByName("latestId");
+                var defaultAudioLanguage = getParameterByName("defaultAudioLanguage");
+                var selectedTab = getParameterByName("selectedTab");
+                var seeMore = getParameterByName("seeMore");
+                var layout = getParameterByName("layout");
+                var categoryName = getParameterByName("categoryName");
+                var isOriginal = getParameterByName("isOriginal");
+                var charCategory =  getParameterByName("charCategory");
+                var screenType = getParameterByName("screenType");
+                var homeId = getParameterByName("homeId");
+
+                var url = path.indexOf('?')>-1?(path+'&'):(path+'?');
+
+                if(appMode.length>0){
+                    url+='appMode='+appMode+'&';
+                }
+                if(id.length>0){
+                    url+='id='+id+'&';
+                }
+                if(type.length>0){
+                    url+='type='+type+'&';
+                }
+                if(isPlaylist.length>0){
+                    url+='isPlaylist='+isPlaylist+'&';
+                }
+                if(playlistId.length>0){
+                    url+='playlistId='+playlistId+'&';
+                }
+                if(latestId.length>0){
+                    url+='latestId='+latestId+'&';
+                }
+                if(defaultAudioLanguage.length>0){
+                    url+='defaultAudioLanguage='+defaultAudioLanguage+'&';
+                }
+                if(selectedTab.length>0){
+                    url+='selectedTab='+selectedTab+'&';
+                }
+                if(seeMore.length>0){
+                    url+='seeMore='+seeMore+'&';
+                }
+                 if(layout.length>0){
+                    url+='layout='+layout+'&';
+                }
+        if(categoryName.length>0){
+                    url+='categoryName='+categoryName+'&';
+                }
+                if(isOriginal.length>0){
+                    url+='isOriginal='+isOriginal+'&';
+                }
+                if(charCategory.length>0){
+                    url+='charCategory='+charCategory+'&';
+                }
+                if(screenType.length>0){
+                    url+='screenType='+screenType+'&';
+                }
+                if(homeId.length>0){
+                    url+='homeId='+homeId;
+                }
+                return url;
+            }
 
     function redirectPage(location, parm) {
-        var path = '';
-        path = enterpriseApps[app][mobileOS][location] + parm;
-          window.location.replace(path);;
+          var path = '';
+          path = enterpriseApps[app][mobileOS][location] + parm;
+          if(app!='compPortal'){
+              window.location.replace(path);
+          }else{
+              if(location=='apppath'){
+                  if(mobileOS=='Android'){
+                      path = getAndroidUrl(path);
+                  }else{
+                      path = getIOSUrl(path);
+                  }
+
+                  window.location.replace(path);;
+              }else{
+                  window.location.replace(path);;
+              }
+          }
         }
 
     function createParms(app, invoke) {
         var parms = '';
         if (invoke == "installedApp" && app == "compPortal") {
-            // parms = id ? "?id:" + id : '';
-            // parms += type ? "&type:" + type : '';
              parms += referrer ? "&referrer:" + referrer : '';
-            // parms += gclid ? "&gclid:" + gclid : '';
         } else if (invoke == "store") {
             parms += referrer ? "&referrer=" + referrer : '';
         }
